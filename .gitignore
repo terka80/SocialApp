@@ -1,4 +1,4 @@
-.env.development
-.env.production
+.env*
+!.env.example
 assets
 node_modules
