@@ -1,11 +1,9 @@
 import { StorageApproachEnum } from "./../../enum/multer.enum";
 import multer from "multer";
 import { randomUUID } from "node:crypto";
-import { resolve } from "node:path";
-import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
+import { readFile, unlink, writeFile } from "node:fs/promises";
 import { fileTypeFromBuffer } from "file-type";
 import { BadRequestException } from "../../exception";
-import { string } from "zod";
 import { Request } from "express";
 import { tmpdir } from "node:os";
 
@@ -56,14 +54,14 @@ export const processFile = async ({
     await unlink(file.path)
     throw new BadRequestException("invalidFile format");
   } 
-    await mkdir(resolve(`./assets/${customPath}`), { recursive: true });
-    const uniqueFilePath = `assets/${customPath}/${randomUUID()}.${result.ext}`;
+    // await mkdir(resolve(`./assets/${customPath}`), { recursive: true });
+    // const uniqueFilePath = `assets/${customPath}/${randomUUID()}.${result.ext}`;
 
-    await writeFile(resolve(`./${uniqueFilePath}`), file.buffer);
+    // await writeFile(resolve(`./${uniqueFilePath}`), file.buffer);
     if ( file.path) {
       unlink(file.path)
     }
-    file.path = uniqueFilePath;
+    // file.path = uniqueFilePath;
   
   return file;
 };

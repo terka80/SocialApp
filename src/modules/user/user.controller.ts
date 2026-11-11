@@ -1,3 +1,4 @@
+import { IFile } from './../../Common/types/multer.types';
 import { StorageApproachEnum } from './../../Common/enum/multer.enum';
 import { localFileUpload, fileValidation } from './../../Common/utils/multer/local.multer';
 import { uploadMiddleware } from './../../middleware/multer.middleware';
@@ -7,6 +8,7 @@ import { tokenTypeEnum } from "./../../Common/enum/security.enum";
 import { responseFormatter } from "./../../middleware/response.middleware";
 import { authentication } from "./../../middleware/authentication.middleware";
 import { NextFunction, Request, Response, Router } from "express";
+import { IResponse } from '../../Common/interface/response.interface.js';
 
 const router = Router({ strict: true, caseSensitive: true });
 
@@ -20,13 +22,14 @@ router.get(
 router.patch(
   "/profile-image",
   uploadMiddleware({
-    multerMiddleware:localFileUpload({storageApproach:StorageApproachEnum.DISK}).single('attachment'),
+    multerMiddleware:localFileUpload({storageApproach:StorageApproachEnum.MEMORY}).single('attachment'),
     validation:fileValidation.image,
     customPath:'User'
   }),
   authentication,
-  responseFormatter(async (req: Request, res: Response, next: NextFunction) => {
-    return { data: req.file };
+  responseFormatter(async (req: Request, res: Response, next: NextFunction):Promise<IResponse<Record<string, string>>> => {
+    const key = await userService.profileImage(req.file as IFile , req.user)
+    return { data:{key} };
   }),
 );
 

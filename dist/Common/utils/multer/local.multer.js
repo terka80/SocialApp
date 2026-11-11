@@ -7,7 +7,6 @@ exports.processMulterUpload = exports.processFields = exports.processFiles = exp
 const multer_enum_1 = require("./../../enum/multer.enum");
 const multer_1 = __importDefault(require("multer"));
 const node_crypto_1 = require("node:crypto");
-const node_path_1 = require("node:path");
 const promises_1 = require("node:fs/promises");
 const file_type_1 = require("file-type");
 const exception_1 = require("../../exception");
@@ -42,13 +41,9 @@ const processFile = async ({ customPath = "general", file, validation, }) => {
         await (0, promises_1.unlink)(file.path);
         throw new exception_1.BadRequestException("invalidFile format");
     }
-    await (0, promises_1.mkdir)((0, node_path_1.resolve)(`./assets/${customPath}`), { recursive: true });
-    const uniqueFilePath = `assets/${customPath}/${(0, node_crypto_1.randomUUID)()}.${result.ext}`;
-    await (0, promises_1.writeFile)((0, node_path_1.resolve)(`./${uniqueFilePath}`), file.buffer);
     if (file.path) {
         (0, promises_1.unlink)(file.path);
     }
-    file.path = uniqueFilePath;
     return file;
 };
 exports.processFile = processFile;

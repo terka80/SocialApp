@@ -28,4 +28,6 @@ app.all("/", async (req, res, next) => {
 });
 app.use("/auth", modules_1.authenticationController);
 app.use("/user", modules_1.userController);
+app.use("/post", modules_1.postController);
+app.use("/comment", modules_1.commentController);
 app.use(error_middleware_1.globalErrorHandling);

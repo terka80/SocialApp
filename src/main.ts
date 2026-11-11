@@ -2,8 +2,13 @@ import { bootstrapDB } from "./DB/connection.db";
 import { ORIGINS, PORT } from "./config";
 import { globalErrorHandling } from "./middleware/error.middleware";
 import express from "express";
-import { authenticationController, userController } from "./modules";
-import cors from 'cors'
+import {
+  authenticationController,
+  commentController,
+  postController,
+  userController,
+} from "./modules";
+import cors from "cors";
 const app: express.Application = express();
 
 var corsOptions = {
@@ -19,7 +24,7 @@ var corsOptions = {
   },
 };
 
-app.use(cors(),express.json());
+app.use(cors(), express.json());
 app.use("/assets", express.static("./assets"));
 
 bootstrapDB(app, PORT);
@@ -35,5 +40,7 @@ app.all(
 );
 app.use("/auth", authenticationController);
 app.use("/user", userController);
+app.use("/post", postController);
+app.use("/comment", commentController);
 
 app.use(globalErrorHandling);

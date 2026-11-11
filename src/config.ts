@@ -39,3 +39,13 @@ export const APPLICATION_NAME: string = process.env.APPLICATION_NAME as string;
 export const WEB_CLIENT_ID: string[] =
   process.env.WEB_CLIENT_ID?.split(",") || [];
 export const ORIGINS: string[] = process.env.Origins?.split(",") || [];
+
+
+export const AWS_ACCESS_KEY_ID: string = process.env
+  .AWS_ACCESS_KEY_ID as string;
+export const AWS_ACCESS_SECRET_KEY: string = process.env
+  .AWS_ACCESS_SECRET_KEY as string;
+export const AWS_REGION: string = process.env
+  .AWS_REGION as string;
+export const AWS_BUCKET_NAME: string = process.env
+  .AWS_BUCKET_NAME as string;

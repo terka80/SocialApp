@@ -1,3 +1,5 @@
+import { IFile } from './../../Common/types/multer.types';
+import { cloudService, CloudService } from './../../Common/service/cloud.service';
 import { cacheService, CacheService } from './../../Common/service/cache.service';
 import { ConflictException } from "./../../Common/exception/domain.exception";
 import { ACCESS_TOKEN_EXPIRES_IN } from "./../../config";
@@ -14,14 +16,22 @@ import { UserRepository } from "../../Common/repository";
 export class UserService {
   private readonly tokenService: TokenService;
   private readonly userRepository: UserRepository;
-  private readonly cacheService: CacheService;
-
+  private readonly cacheService: CacheService; 
+  private readonly cloudService : CloudService
   constructor() {
     this.tokenService = tokenService;
     this.userRepository = new UserRepository();
     this.cacheService= cacheService
+    this.cloudService = cloudService
   }
 
+  async profileImage(file: IFile , user : HUser):Promise<string> {
+   const key= await this.cloudService.uploadAsset({
+      file,
+      folder :`User/${user._id.toString()}`
+    })
+    return key;
+  }
   async rotateToken(payload: jWTpayloadtype, user: HUser, issuer: string) {
     const accessExpiresIn = (payload.iat + ACCESS_TOKEN_EXPIRES_IN) * 1000;
     const currentDate = Date.now() + 30 * 60000;
